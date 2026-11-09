@@ -1,0 +1,88 @@
+/**
+ * ========================================================
+ * DESIGN TOKENS (Tailwind CSS v4 Theme)
+ * ========================================================
+ * Welcome! This file holds all your design tokens (colors,
+ * fonts, border radius, and shadows).
+ *
+ * How it works:
+ * Change any color here, and it will update across your app!
+ * Tailwind automatically creates classes for each variable.
+ */
+
+@theme {
+  /* --------------------------------------------------------
+   * 1. BRAND COLORS
+   * --------------------------------------------------------
+   * Usage in your components:
+   *  - Background: bg-primary, bg-primary-hover, bg-primary-light
+   *  - Text:       text-primary, text-primary-hover
+   *  - Border:     border-primary
+   */
+  --color-primary: #4f46e5;          /* Main button & highlight color (Indigo) */
+  --color-primary-hover: #4338ca;    /* Hover color for primary buttons */
+  --color-primary-light: #eef2ff;    /* Soft light background tint */
+
+  /* --------------------------------------------------------
+   * 2. SECONDARY / ACCENT COLOR
+   * --------------------------------------------------------
+   * Usage: bg-secondary, text-secondary, hover:bg-secondary-hover
+   */
+  --color-secondary: #9333ea;        /* Accent color (Purple) */
+  --color-secondary-hover: #7e22ce;  /* Hover state for secondary */
+  --color-secondary-light: #faf5ff;  /* Soft light purple background */
+
+  /* --------------------------------------------------------
+   * 3. FEEDBACK COLORS (Status, Alerts, Badges)
+   * --------------------------------------------------------
+   * Usage: bg-success, text-success, bg-error, text-error, etc.
+   */
+  --color-success: #059669;          /* Green for success text */
+  --color-success-light: #ecfdf5;    /* Light green background for alerts */
+  --color-success-border: #a7f3d0;   /* Light green border for alerts */
+
+  --color-warning: #d97706;          /* Yellow/Amber for warnings */
+  --color-warning-light: #fffbeb;    /* Light amber background for alerts */
+
+  --color-error: #dc2626;            /* Red for error text */
+  --color-error-light: #fef2f2;      /* Light red background for alerts */
+  --color-error-border: #fecdd3;     /* Light red border for alerts */
+
+  --color-info: #0284c7;             /* Blue for notifications */
+  --color-info-light: #f0f9ff;       /* Light blue background for alerts */
+
+  /* --------------------------------------------------------
+   * 4. BACKGROUND & TEXT COLORS
+   * --------------------------------------------------------
+   * Usage: bg-page, bg-card, text-main, text-muted, border-line
+   */
+  --color-page: #f8fafc;             /* Page background (light gray) */
+  --color-card: #ffffff;             /* Card and modal background (white) */
+  --color-text-main: #0f172a;        /* Main dark text */
+  --color-text-muted: #64748b;       /* Secondary gray text */
+  --color-border-line: #e2e8f0;      /* Card & input borders */
+
+  /* --------------------------------------------------------
+   * 5. TYPOGRAPHY
+   * --------------------------------------------------------
+   * Usage: font-sans
+   */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* --------------------------------------------------------
+   * 6. CORNER ROUNDING (Border Radius)
+   * --------------------------------------------------------
+   * Usage: rounded-btn, rounded-card, rounded-pill
+   */
+  --radius-btn: 0.5rem;              /* 8px - buttons and inputs */
+  --radius-card: 1rem;               /* 16px - cards and modals */
+  --radius-pill: 9999px;             /* Pill shaped badges */
+
+  /* --------------------------------------------------------
+   * 7. SHADOWS (Elevation)
+   * --------------------------------------------------------
+   * Usage: shadow-card, shadow-soft
+   */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-soft: 0 10px 25px -5px rgba(79, 70, 229, 0.15);
+}

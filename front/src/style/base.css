@@ -1,0 +1,22 @@
+/**
+ * ========================================================
+ * BASE GLOBAL STYLES
+ * ========================================================
+ * These are simple default styles applied to your entire page.
+ */
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-page, #f8fafc);
+  color: var(--color-text-main, #0f172a);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Make images and videos responsive by default */
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
