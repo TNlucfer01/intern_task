@@ -106,14 +106,8 @@ export function Login({
     setLoading(true);
     try {
       await login(email, password);
-      const state = location.state as { from?: { pathname?: string } } | null;
-      const destination = state?.from?.pathname;
-      navigate(
-        destination?.startsWith("/") && !destination.startsWith("//")
-          ? destination
-          : "/dashboard",
-        { replace: true },
-      );
+     const from = location.state?.from?.pathname || "/dashboard";
+     navigate(from, { replace: true }); // go back to the original page
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Please try again.");
     } finally {

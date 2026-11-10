@@ -1,8 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 
-
-function PrivateRoutes() {
+function ProtectedRoutes() {
     const { isAuthenticated, isLoading } = useAuth();
     const location = useLocation();
 
@@ -15,4 +14,4 @@ function PrivateRoutes() {
     return <Outlet />;
 }
 
-export default PrivateRoutes;
+export default ProtectedRoutes;
