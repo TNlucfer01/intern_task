@@ -1,5 +1,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import type { CreateTaskInput, Task } from "../../../api/types/task.types";
+import type { Project } from "../../../api/types/project.types";
+import type { User } from "../../../api/types/user.types";
 import { FormField } from "../../../components/FormField";
 import { Button } from "../../../components/ui/button";
 import {
@@ -12,6 +14,7 @@ import {
 } from "../../../components/ui/dialog";
 import { Input } from "../../../components/ui/input";
 import { Textarea } from "../../../components/ui/textarea";
+import { TaskRelationPicker } from "./TaskRelationPicker";
 
 type TaskForm = Omit<CreateTaskInput, "assignedTo" | "associatedProject" | "timeTaken"> & {
   assignedTo: number | "";
@@ -37,10 +40,23 @@ interface TaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   task?: Task | null;
+  users: User[];
+  projects: Project[];
+  isLoadingOptions: boolean;
+  optionsError: string | null;
   onSubmit: (data: CreateTaskInput) => Promise<void>;
 }
 
-export function TaskDialog({ open, onOpenChange, task, onSubmit }: TaskDialogProps) {
+export function TaskDialog({
+  open,
+  onOpenChange,
+  task,
+  users,
+  projects,
+  isLoadingOptions,
+  optionsError,
+  onSubmit,
+}: TaskDialogProps) {
   const [form, setForm] = useState<TaskForm>(emptyForm);
   const [isSaving, setIsSaving] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
@@ -67,6 +83,14 @@ export function TaskDialog({ open, onOpenChange, task, onSubmit }: TaskDialogPro
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (form.assignedTo === "" || form.associatedProject === "") {
+      setFormError("Select both an assignee and a project.");
+      return;
+    }
+    if (optionsError) {
+      setFormError("Unable to load users or projects. Close and reopen this form to retry.");
+      return;
+    }
     setIsSaving(true);
     setFormError(null);
     try {
@@ -116,40 +140,47 @@ export function TaskDialog({ open, onOpenChange, task, onSubmit }: TaskDialogPro
             />
           </FormField>
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormField id="task-assigned-to" label="Assignee user ID">
-              <Input
+            <FormField id="task-assigned-to" label="Assignee">
+              <TaskRelationPicker
                 id="task-assigned-to"
-                min={1}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    assignedTo: event.target.value ? Number(event.target.value) : "",
-                  }))
+                disabled={isLoadingOptions || Boolean(optionsError)}
+                emptyMessage="No users found."
+                onChange={(assignedTo) =>
+                  setForm((current) => ({ ...current, assignedTo }))
                 }
-                placeholder="User ID"
-                required
-                type="number"
+                options={users.map((user) => ({
+                  id: user.id,
+                  label: user.name,
+                  description: user.email,
+                }))}
+                placeholder={isLoadingOptions ? "Loading users..." : "Search users..."}
                 value={form.assignedTo}
               />
             </FormField>
-            <FormField id="task-project" label="Project ID">
-              <Input
+            <FormField id="task-project" label="Project">
+              <TaskRelationPicker
                 id="task-project"
-                min={1}
-                onChange={(event) =>
-                  setForm((current) => ({
-                    ...current,
-                    associatedProject: event.target.value ? Number(event.target.value) : "",
-                  }))
+                disabled={isLoadingOptions || Boolean(optionsError)}
+                emptyMessage="No projects found."
+                onChange={(associatedProject) =>
+                  setForm((current) => ({ ...current, associatedProject }))
                 }
-                placeholder="Project ID"
-                required
-                type="number"
+                options={projects.map((project) => ({
+                  id: project.id,
+                  label: project.name,
+                  description: project.status,
+                }))}
+                placeholder={isLoadingOptions ? "Loading projects..." : "Search projects..."}
                 value={form.associatedProject}
               />
             </FormField>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          {optionsError && (
+            <p className="text-sm text-destructive" role="alert">
+              {optionsError}
+            </p>
+          )}
+          <div className={`grid gap-4 ${isEditing ? "sm:grid-cols-2" : ""}`}>
             <FormField id="task-deadline" label="Deadline">
               <Input
                 id="task-deadline"
@@ -158,14 +189,21 @@ export function TaskDialog({ open, onOpenChange, task, onSubmit }: TaskDialogPro
                 value={dateInputValue(form.deadline)}
               />
             </FormField>
-            <FormField id="task-completed-at" label="Completed on">
-              <Input
-                id="task-completed-at"
-                onChange={(event) => setForm((current) => ({ ...current, completedAt: event.target.value }))}
-                type="date"
-                value={dateInputValue(form.completedAt)}
-              />
-            </FormField>
+            {isEditing && (
+              <FormField id="task-completed-at" label="Completed on">
+                <Input
+                  id="task-completed-at"
+                  onChange={(event) =>
+                    setForm((current) => ({
+                      ...current,
+                      completedAt: event.target.value,
+                    }))
+                  }
+                  type="date"
+                  value={dateInputValue(form.completedAt)}
+                />
+              </FormField>
+            )}
           </div>
           <FormField id="task-time-taken" label="Time taken (minutes)">
             <Input
@@ -187,7 +225,7 @@ export function TaskDialog({ open, onOpenChange, task, onSubmit }: TaskDialogPro
             <Button disabled={isSaving} onClick={() => onOpenChange(false)} type="button" variant="outline">
               Cancel
             </Button>
-            <Button disabled={isSaving} type="submit">
+            <Button disabled={isSaving || isLoadingOptions || Boolean(optionsError)} type="submit">
               {isSaving ? "Saving..." : isEditing ? "Save changes" : "Create task"}
             </Button>
           </DialogFooter>

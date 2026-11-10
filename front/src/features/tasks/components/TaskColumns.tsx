@@ -1,6 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { CheckCircle2, Circle, SquarePen } from "lucide-react";
+import type { Project } from "../../../api/types/project.types";
 import type { Task } from "../../../api/types/task.types";
+import type { User } from "../../../api/types/user.types";
 import { DeleteConfirmation } from "../../../components/DeleteConfirmation";
 import { Button } from "../../../components/ui/button";
 
@@ -16,13 +18,20 @@ interface GetColumnsOptions {
   onEdit: (task: Task) => void;
   onDelete: (id: number) => void;
   deletingId: number | null;
+  users: User[];
+  projects: Project[];
 }
 
 export function getTaskColumns({
   onEdit,
   onDelete,
   deletingId,
+  users,
+  projects,
 }: GetColumnsOptions): ColumnDef<Task, unknown>[] {
+  const userNames = new Map(users.map((user) => [user.id, user.name]));
+  const projectNames = new Map(projects.map((project) => [project.id, project.name]));
+
   return [
     {
       accessorKey: "title",
@@ -52,19 +61,22 @@ export function getTaskColumns({
       ),
     },
     {
-      accessorKey: "assignedTo",
+      id: "assignedTo",
+      accessorFn: (task) =>
+        userNames.get(task.assignedTo) ?? `User #${task.assignedTo}`,
       header: "Assignee",
-      cell: ({ row }) => (
-        <span className="text-muted-foreground">User #{row.original.assignedTo}</span>
+      cell: ({ getValue }) => (
+        <span className="text-muted-foreground">{getValue<string>()}</span>
       ),
     },
     {
-      accessorKey: "associatedProject",
+      id: "associatedProject",
+      accessorFn: (task) =>
+        projectNames.get(task.associatedProject) ??
+        `Project #${task.associatedProject}`,
       header: "Project",
-      cell: ({ row }) => (
-        <span className="text-muted-foreground">
-          Project #{row.original.associatedProject}
-        </span>
+      cell: ({ getValue }) => (
+        <span className="text-muted-foreground">{getValue<string>()}</span>
       ),
     },
     {

@@ -128,16 +128,21 @@ export function ProjectDialog({
               />
             </FormField>
           </div>
-          <FormField id="project-completed-at" label="Completed on">
-            <Input
-              id="project-completed-at"
-              onChange={(event) =>
-                setForm((current) => ({ ...current, completedAt: event.target.value }))
-              }
-              type="date"
-              value={dateInputValue(form.completedAt)}
-            />
-          </FormField>
+          {isEditing && (
+            <FormField id="project-completed-at" label="Completed on">
+              <Input
+                id="project-completed-at"
+                onChange={(event) =>
+                  setForm((current) => ({
+                    ...current,
+                    completedAt: event.target.value,
+                  }))
+                }
+                type="date"
+                value={dateInputValue(form.completedAt)}
+              />
+            </FormField>
+          )}
           {formError && <p className="text-sm text-destructive" role="alert">{formError}</p>}
           <DialogFooter>
             <Button disabled={isSaving} onClick={() => onOpenChange(false)} type="button" variant="outline">

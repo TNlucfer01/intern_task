@@ -2,7 +2,7 @@ const { permissions } = require("../config/roles");
 
 function hasPermission(permission) {
     return (req, res, next) => {
-        const role = req.user.role;
+        const role = req.user.role?.toUpperCase();
 
         const userPermissions = permissions[role];
 

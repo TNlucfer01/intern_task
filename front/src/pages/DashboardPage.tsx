@@ -11,6 +11,7 @@ export function DashboardPage() {
         title="Good to see you"
       />
       <WorkspaceSections />
+      
       <section className="mt-8 rounded-xl border bg-card p-6 shadow-sm sm:p-8">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
           Get started

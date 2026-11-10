@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthPage } from "../page/AuthPage";
-import { DashboardPage } from "../page/dashBoard";
-import { DepartmentsPage } from "../page/DepartmentsPage";
-import { ProjectsPage } from "../page/ProjectsPage";
-import { TasksPage } from "../page/TasksPage";
-import { UsersPage } from "../page/UsersPage";
-import PublicRoutes from "./publicRouter";
-import PrivateRoutes from "./protectedRoutes";
+import { AuthPage } from "../pages/AuthPage";
+import { DashboardPage } from "../pages/DashboardPage";
+import { DepartmentsPage } from "../pages/DepartmentsPage";
+import { ProjectsPage } from "../pages/ProjectsPage";
+import { TasksPage } from "../pages/TasksPage";
+import { UsersPage } from "../pages/UsersPage";
+import PublicRoutes from "./PublicRoutes";
+import PrivateRoutes from "./ProtectedRoutes";
 
 const NotFound = () => (
   <main className="flex min-h-screen items-center justify-center p-8 text-center">

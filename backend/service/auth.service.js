@@ -8,7 +8,7 @@ const registerUser = async (name, email, password) => {
     name,
     email,
     password: hashedPassword,
-    role: "employee",
+    role: "EMPLOYEE",
   });
   
 
@@ -44,7 +44,7 @@ const loginUser = async (email, password) => {
   throw new Error("JWT_SECRET is required");
 }
   const token = jwt.sign(
-    { id: user.id, email: user.email ,role:user.role},
+    { id: user.id, email: user.email, role: user.role.toUpperCase() },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );

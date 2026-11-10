@@ -10,7 +10,19 @@ import { WorkspaceLayout } from "../components/WorkspaceLayout";
 import { Button } from "../components/ui/button";
 
 export function TasksPage() {
-  const { tasks, isLoading, error, deletingId, create, update, remove } = useTasks();
+  const {
+    tasks,
+    users,
+    projects,
+    isLoading,
+    isLoadingOptions,
+    error,
+    optionsError,
+    deletingId,
+    create,
+    update,
+    remove,
+  } = useTasks();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
 
@@ -23,8 +35,10 @@ export function TasksPage() {
         },
         onDelete: remove,
         deletingId,
+        users,
+        projects,
       }),
-    [deletingId, remove],
+    [deletingId, projects, remove, users],
   );
 
   async function handleSubmit(input: Parameters<typeof create>[0]) {
@@ -77,6 +91,10 @@ export function TasksPage() {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         task={editing}
+        users={users}
+        projects={projects}
+        isLoadingOptions={isLoadingOptions}
+        optionsError={optionsError}
         onSubmit={handleSubmit}
       />
     </WorkspaceLayout>

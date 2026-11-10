@@ -45,7 +45,7 @@ const createUser = async (userData) => {
       name: data.name,
       email: data.email,
       password: await bcrypt.hash(data.password, 10),
-      role: data.role,
+      role: typeof data.role === "string" ? data.role.trim().toUpperCase() : "EMPLOYEE",
       title: data.title,
           assigned_department: data.assigned_department,                                                 
     });
@@ -63,8 +63,12 @@ const updateUserid = async (userId, userData) => {
     }
     const data = userData && typeof userData === "object" ? userData : {};
     const updates = {};
-    for (const field of ["name", "email", "role", "title", "assigned_department"]) {                     if (data[field] !== undefined) {
-        updates[field] = data[field];
+    for (const field of ["name", "email", "role", "title", "assigned_department"]) {
+      if (data[field] !== undefined) {
+        updates[field] =
+          field === "role" && typeof data[field] === "string"
+            ? data[field].trim().toUpperCase()
+            : data[field];
       }
     }
    

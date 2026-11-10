@@ -27,7 +27,7 @@ const permissions = {
 };
 
 function hasPermission(role, permission) {
-    const userPermissions = permissions[role];
+    const userPermissions = permissions[role?.toUpperCase()];
 
     if (!userPermissions) {
         return false;

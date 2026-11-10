@@ -23,7 +23,7 @@ const userSchema = sequelize.define("users", {
   role: {
     type: sequelize.Sequelize.STRING,
     allowNull: false,
-    defaultValue: "employee",
+    defaultValue: "EMPLOYEE",
   },
   title: {
     type: sequelize.Sequelize.STRING,
