@@ -3,6 +3,7 @@ import { auth } from "../api/endpoints";
 import { useAuth } from "../context/authContext";
 import Alert from "../componets/ui/Alert";
 import InputField from "../componets/ui/input";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function Register({ onSwitchToLogin }: { onSwitchToLogin?: () => void }) {
   const [formdata, setFormData] = useState({ name: "", email: "", password: "" });
@@ -96,6 +97,8 @@ export function Login({
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -103,6 +106,14 @@ export function Login({
     setLoading(true);
     try {
       await login(email, password);
+      const state = location.state as { from?: { pathname?: string } } | null;
+      const destination = state?.from?.pathname;
+      navigate(
+        destination?.startsWith("/") && !destination.startsWith("//")
+          ? destination
+          : "/dashboard",
+        { replace: true },
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Please try again.");
     } finally {
@@ -130,7 +141,6 @@ export function Login({
         onChange={(e) => setPassword(e.target.value)}
         placeholder="••••••••"
       />
-      {error && <Alert type="error" message={error} />}
       {error && <Alert type="error" message={error} />}
 
       <button

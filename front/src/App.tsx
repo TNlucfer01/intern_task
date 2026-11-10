@@ -1,4 +1,4 @@
-import { AuthPage } from "./page/AuthPage";
+import AppRouter from "./routes";
 import { useAuth } from "./context/authContext";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         );
     }
 
-    return <AuthPage />;
+    return <AppRouter />;
 }
 
 export default App;
