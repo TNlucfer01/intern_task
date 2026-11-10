@@ -1,4 +1,4 @@
-function InputField({
+export default function InputField({
   label,
   id,
   type = "text",
@@ -33,5 +33,3 @@ function InputField({
     </div>
   );
 }
-
-export default InputField;

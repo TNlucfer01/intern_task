@@ -1,4 +1,4 @@
-function Alert({ type, message }: { type: "error" | "success"; message: string }) {
+export default function Alert({ type, message }: { type: "error" | "success"; message: string }) {
   const styles =
     type === "error"
       ? "bg-error-light border-error-border text-error"
@@ -10,5 +10,3 @@ function Alert({ type, message }: { type: "error" | "success"; message: string }
     </div>
   );
 }
-
-export default Alert;
